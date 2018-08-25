@@ -1,0 +1,51 @@
+<apex:page controller="ProductListController" tabStyle="Product_List__tab">
+<apex:slds />
+    <apex:form >
+         <apex:messages styleClass="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_info"/>
+        <h1 class="slds-page-header__title slds-truncate slds-align-middle" title="Product List">Product List</h1><br/>
+        <apex:pageBlock >
+            <apex:dataTable value="{!Products}" var="prod" styleClass="slds-table slds-table_bordered" >
+                <apex:column headerValue="IMAGE" width="15%">
+                 <div class="slds-grid slds-grid_vertical-align-center" style="height:250px">
+                    <div class=' slds-align_absolute-center'>
+                        <apex:image value="{!prod.Image_URL__c}"/>
+                    </div>
+                </div>
+                </apex:column>
+                <apex:column width="10%" >
+                    <div class="slds-grid slds-grid_vertical-align-center" style="height:250px">
+                        <a href= "Product_View?id={!prod.id}">{!prod.Name}</a>
+                    </div>
+                </apex:column>
+                <apex:column headerValue="DESCRIPTION" width="55%"  >
+                    <apex:outputText rendered="{!IF(LEN(prod.Product_D__c) > 100, true, false)}">
+                        <div class="slds-grid slds-grid_vertical-align-center" style="height:250px"> 
+                            <div class="slds-cell-wrap" title="{!prod.Product_D__c}"> 
+                                {!LEFT(prod.Product_D__c, 100)+ "..."}  <a href= "Product_View?id={!prod.id}">More</a>
+                            </div>
+                        </div>
+                    </apex:outputText>
+                    <apex:outputText rendered="{!IF(LEN(prod.Product_D__c) <= 100, true, false)}">
+                     <div class="slds-grid slds-grid_vertical-align-center" style="height:250px"> 
+                            <div class="slds-cell-wrap" title="{!prod.Product_D__c}"> 
+                                {!prod.Product_D__c}
+                            </div>
+                        </div>
+                    </apex:outputText>
+                </apex:column>
+                <apex:column headerValue="COST" width="5%" >  
+                    <div class="slds-grid slds-grid_vertical-align-center" style="height:250px">
+                        <apex:outputText value="{0,number,#,###,###.00 $}">
+                            <apex:param value="{!prod.Unit_price__c}" />
+                        </apex:outputText>               
+                    </div>
+                </apex:column>
+                <apex:column width="10%" >
+                    <div class="slds-grid slds-grid_vertical-align-center" style="height:250px">
+                       <a href= "Product_Buy?id={!prod.id}"> <button type="button" class="slds-button slds-button_brand">Buy</button></a>
+                    </div>
+                </apex:column>
+            </apex:dataTable>
+        </apex:pageBlock> 
+    </apex:form>  
+</apex:page>

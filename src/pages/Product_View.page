@@ -1,0 +1,42 @@
+<apex:page controller="ProductViewController"  tabStyle="Product_List__tab">
+    <apex:slds />
+     <apex:messages />
+
+        <div class="slds-grid slds-wrap">
+            <div class="slds-col slds-size_1-of-1">
+                <div class="slds-card__header slds-grid">
+               <header class="slds-media slds-media_center  slds-has-flexi-truncate">
+                        <div class="slds-media__body">
+                            <h2 class="slds-card__header-title">
+                                <span class="slds-text-heading_small">{!NameProd}</span>
+                     </h2>
+                  </div>
+               </header>
+            </div>
+            </div>
+        
+            <div class="slds-col slds-size_4-of-12">
+                <div class="slds-grid slds-grid_vertical-align-center" >
+                    <div class=' slds-align_absolute-center'>
+                        <apex:image value="{!ImageProd}"/>
+               </div>
+            </div>
+            </div>
+            
+            <div class="slds-col slds-size_8-of-12">
+                <dl>
+                  <dt>AMOUNT: </dt>
+                  <dd>{!AmountProd}</dd>
+                  <dt>DESCRIPTION:</dt>
+                  <dd>{!DescriptionProd}</dd>
+                </dl>  
+            </div> 
+        
+            <div class="slds-col slds-size_1-of-1">
+                <footer class="slds-card__footer">
+               <a href= "Product_List"> <button type="button" class="slds-button slds-button_neutral">To Shopping</button></a>
+               <a href= "Product_Buy?id={!ProdId}"> <button type="button" class="slds-button slds-button_brand">Buy</button></a>
+            </footer>
+            </div>
+        </div>
+</apex:page>

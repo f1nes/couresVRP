@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Warehouse</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Warehouses</value>
+    </caseValues>
+    <fields>
+        <label><!-- Period End --></label>
+        <name>Period_End__c</name>
+    </fields>
+    <fields>
+        <label><!-- Period Start --></label>
+        <name>Period_Start__c</name>
+    </fields>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

@@ -1,0 +1,125 @@
+<apex:page controller="ProductBuyController"  docType="html-5.0"  tabStyle="Product_List__tab">
+<apex:slds />
+   <apex:form >
+ 
+ <apex:messages styleClass="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error"/>
+       <apex:actionFunction name="afsaveInfoBuy" action="{!saveInfoBuy}"/>
+       <apex:inputHidden value="{!amountProd}" id="hiddenAmountProd" />
+       <apex:inputHidden value="{!priceProd}" id="hiddenPriceProd" />
+    <!--header-->
+    <div class="slds-grid slds-wrap">
+		<div class="slds-col slds-size_2-of-12"></div>
+        <div class="slds-col slds-size_3-of-12">  
+        	<div class="slds-card__header slds-grid">
+            	<header class="slds-media slds-media_center  slds-has-flexi-truncate">
+                	<h1 class="slds-card__header-title">Contact Information</h1>
+              	</header>
+            </div>
+       	</div> 
+        <div class="slds-col slds-size_2-of-12"></div>
+        <div class="slds-col slds-size_3-of-12">
+        	<div class="slds-card__header slds-grid">
+            	<header class="slds-media slds-media_center  slds-has-flexi-truncate">
+					<h1 class="slds-card__header-title">Product Information</h1>
+                </header>
+            </div>
+        </div>
+        <div class="slds-col slds-size_2-of-12"></div>
+	</div>   
+     <!--Body-->
+    <div class="slds-grid slds-wrap">  
+    	<div class="slds-col slds-size_2-of-12"></div>
+        <div class="slds-col slds-size_1-of-12">  Email  </div> 
+        <div class="slds-col slds-size_2-of-12"> 
+            <div class="slds-form-element__control">
+                <apex:input value="{!email}" styleClass="slds-input" id="Email" type="email"  />
+            </div>
+        </div>
+        <div class="slds-col slds-size_2-of-12"> </div>
+        <div class="slds-col slds-size_1-of-12">Product name </div>
+        <div class="slds-col slds-size_3-of-12">
+        	 {!nameProd}
+        </div>
+        <div class="slds-col slds-size_1-of-12"> </div>
+	</div>
+    
+     <div class="slds-grid slds-wrap">  
+    	<div class="slds-col slds-size_2-of-12"></div>
+        <div class="slds-col slds-size_1-of-12">First Name</div> 
+        <div class="slds-col slds-size_2-of-12"> 
+            <div class="slds-form-element__control">
+                <apex:input value="{!firstName}" styleClass="slds-input" id="firstName"  type="text" />
+            </div>
+        </div>
+        <div class="slds-col slds-size_2-of-12"> </div>
+        <div class="slds-col slds-size_1-of-12">Cost</div>
+        <div class="slds-col slds-size_2-of-12">
+        	<apex:outputText id="PriceProd" value="{0,number,#,###,###.00 $}">
+                            <apex:param value="{!priceProd}" />
+                        </apex:outputText>    
+        </div>
+        <div class="slds-col slds-size_2-of-12"> </div>
+	</div>    
+       
+	<div class="slds-grid slds-wrap">  
+    	<div class="slds-col slds-size_2-of-12"></div>
+        <div class="slds-col slds-size_1-of-12">Last Name </div> 
+        <div class="slds-col slds-size_2-of-12"> 
+            <div class="slds-form-element__control">
+             <apex:input value="{!lastName}" styleClass="slds-input" id="lastName"  type="text" />
+            </div>
+        </div>
+        <div class="slds-col slds-size_2-of-12"> </div>
+        <div class="slds-col slds-size_1-of-12">Unit Count</div>
+        <div class="slds-col slds-size_2-of-12">
+        	<div class="slds-form-element__control">
+               <input id="amountProd" 
+                      value="{!amountProd}" 
+                      type="number" 
+                      name="AmountProd"
+                      class="slds-input" 
+                      placeholder="0" 
+                      oninput = "getCalcAmount()"
+                     />
+            </div>
+        </div>
+        <div class="slds-col slds-size_2-of-12"> </div>
+	</div>  
+    
+    <div class="slds-grid slds-wrap">  
+    	<div class="slds-col slds-size_2-of-12"></div>
+        <div class="slds-col slds-size_1-of-12"></div> 
+        <div class="slds-col slds-size_2-of-12"></div>
+        <div class="slds-col slds-size_2-of-12"></div>
+        <div class="slds-col slds-size_1-of-12">Total Amount</div>
+        <div class="slds-col slds-size_2-of-12">
+            <span id = 'totalAmount'></span> $   
+        </div>
+        <div class="slds-col slds-size_2-of-12"> 
+         </div>
+	</div>  
+    
+	<!--footer-->
+    <div class="slds-grid slds-wrap">  
+    	<div class="slds-col slds-size_1-of-1">
+        	<footer class="slds-card__footer">
+            	<a href= "Product_List"> <button type="button" class="slds-button slds-button_neutral">To Shopping</button></a>
+                <button type="button" class="slds-button slds-button_brand" onclick='save()'>Buy</button>
+            </footer>
+		</div>
+	</div>
+
+<script>
+    function getCalcAmount(){
+        document.getElementById('totalAmount').innerHTML = (document.getElementById('amountProd').value * document.getElementById('{!$Component.hiddenPriceProd}').value).toFixed(2);
+        document.getElementById('{!$Component.hiddenAmountProd}').value = document.getElementById('amountProd').value;
+    }
+    function save(){ 
+        afsaveInfoBuy();
+    }
+    window.onload = function () {
+        getCalcAmount();
+	};
+</script>
+    </apex:form>
+</apex:page>
