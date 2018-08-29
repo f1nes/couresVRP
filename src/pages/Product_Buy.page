@@ -4,6 +4,7 @@
  
  <apex:messages styleClass="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error"/>
        <apex:actionFunction name="afsaveInfoBuy" action="{!saveInfoBuy}"/>
+       <apex:actionFunction name="afgetNameContact" action="{!getNameContact}"/>
        <apex:inputHidden value="{!amountProd}" id="hiddenAmountProd" />
        <apex:inputHidden value="{!priceProd}" id="hiddenPriceProd" />
     <!--header-->
@@ -32,7 +33,7 @@
         <div class="slds-col slds-size_1-of-12">  Email  </div> 
         <div class="slds-col slds-size_2-of-12"> 
             <div class="slds-form-element__control">
-                <apex:input value="{!email}" styleClass="slds-input" id="Email" type="email"  />
+                <apex:input value="{!email}" styleClass="slds-input" id="Email" type="email" onchange="getNameContact()" />
             </div>
         </div>
         <div class="slds-col slds-size_2-of-12"> </div>
@@ -120,6 +121,9 @@
     window.onload = function () {
         getCalcAmount();
 	};
+	function getNameContact(){
+       afgetNameContact();
+    }
 </script>
     </apex:form>
 </apex:page>

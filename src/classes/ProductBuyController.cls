@@ -11,11 +11,13 @@ public class ProductBuyController {
     private Decimal amountAll{get;set;}
     private String ContactId{get;set;}
     private String prodId{get;set;}
+    private String firstNameOld{get;set;}
+    private String lastNameOld{get;set;}
     
     public ProductBuyController (){
     	viewPage(); 
     }
-    
+    Pattern p = Pattern.compile( '([a-zA-Z0-9_\\-\\.]+)@(((\\[a-z]{1,3}\\.[a-z]{1,3}\\.[a-z]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3}))');
     
     private void viewPage(){
           this.prodId= Apexpages.currentPage().getparameters().get('id');
@@ -23,8 +25,7 @@ public class ProductBuyController {
            	Product_Table__c Prod = [SELECT Id, Name, Unit_Price__c, Unit__c  FROM Product_Table__c WHERE id=:this.ProdId ];
            	this.nameProd   = Prod.Name;
          	this.priceProd  = Prod.Unit_Price__c == null ?  0 :  Prod.Unit_Price__c;
-         	this.amountProd = Prod.Unit__c == null ?  0 :  Prod.Unit__c; 
-         	this.amountAll  = this.amountProd;
+         	this.amountAll  = Prod.Unit__c == null ?  0 :  Prod.Unit__c;
         }
     }
  
@@ -33,6 +34,12 @@ public class ProductBuyController {
         	ApexPages.addmessage(new ApexPages.message(ApexPages.severity.Error, 'Please, enter Email!!! '));  
         	return null;  
        	}
+	
+        Matcher m = p.matcher(this.email);
+        if (!m.matches()) {
+     	   	ApexPages.addmessage(new ApexPages.message(ApexPages.severity.Error, 'Invalid email format '));  
+			return null;   
+        }         
         if( String.isBlank(this.firstName)){
         	ApexPages.addmessage(new ApexPages.message(ApexPages.severity.Error, 'Please, enter First Name!!! '));  
             return null;  
@@ -48,14 +55,16 @@ public class ProductBuyController {
       
         Savepoint sp = Database.setSavepoint();
 
-        List<Contact> contact = [SELECT id,FirstName,LastName FROM Contact WHERE Email=:this.email LIMIT 1];
-        if(contact.size() > 0){
-            for (Integer i = 0; i<contact.size(); i++ ){
-                contact[i].FirstName = this.firstName;
-            	contact[i].LastName  = this.lastName; 
-                ContactId = contact[i].id;
+
+        if(this.ContactId != null){
+            if( this.firstName !=  this.firstNameOld ||   this.lastName !=  this.lastNameOld){
+             List<Contact> contact = [SELECT id,FirstName,LastName FROM Contact WHERE id=:this.ContactId LIMIT 1];    
+                for (Integer i = 0; i<contact.size(); i++ ){
+                	contact[i].FirstName = this.firstName;
+                    contact[i].LastName = this.lastName;
+                }
+                upsert contact;  
             }
-           update contact;  
         }
         ELSE {
             Contact insertContact = new Contact(
@@ -90,4 +99,17 @@ public class ProductBuyController {
          pgProductList.setRedirect(true);
          return pgProductList;        
     }  
+    public void getNameContact(){
+        System.debug('this.email ' + this.email);
+       	List<Contact> contact = [SELECT id,FirstName,LastName FROM Contact WHERE Email=:this.email LIMIT 1]; 
+       	if(contact.size() > 0){
+		for (Integer i = 0; i<contact.size(); i++ ){
+    		this.firstName =  contact[i].FirstName;
+            this.lastName = contact[i].LastName; 
+            this.firstNameOld = this.firstName;
+            this.lastNameOld = this.lastName;
+            this.ContactId = contact[i].id;
+            }
+        }
+    }
 }
