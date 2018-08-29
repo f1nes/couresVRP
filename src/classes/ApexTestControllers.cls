@@ -40,11 +40,9 @@ public class ApexTestControllers {
     @isTest
     public static void testProductBuyController(){
         Contact  contact = [SELECT id,firstName, lastName, email FROM Contact LIMIT 1];
-	    testAddBuy(4,contact.email,contact.firstName,contact.lastName, 1);
-        testAddBuy(4,contact.email,'firstName99','lastName99', 1);
+        testAddBuy(4,contact.email,contact.firstName,contact.lastName, 1);
         testAddBuy(2,'','','', 1); 
         testAddBuy(2,contact.email,'','', 1);
-		testAddBuy(2,'email11-email.ru','','', 1);
         testAddBuy(2,contact.email,contact.firstName,'', 1);
         testAddBuy(0,contact.email,contact.firstName,contact.lastName, 0);
         testAddBuy(0,contact.email,contact.firstName,contact.lastName, 3);
@@ -58,7 +56,6 @@ public class ApexTestControllers {
         test.setCurrentPageReference(pageRef);
         ProductBuyController buyController = new ProductBuyController();
         buyController.email = email;
-        buyController.getNameContact();
         buyController.firstName = firstName;
         buyController.lastName = lastName;
         buyController.amountProd = amountProd;
