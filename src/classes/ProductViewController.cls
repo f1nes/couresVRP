@@ -4,7 +4,7 @@ public class ProductViewController {
     public Decimal AmountProd{get;set;}
     public String DescriptionProd{get;set;}
     public String ImageProd{get;set;}
-    private String ProdId{get;set;}    
+    public String ProdId{get;set;}    
 
     public ProductViewController (){
         viewPage();  
